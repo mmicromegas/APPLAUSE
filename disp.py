@@ -4,8 +4,9 @@ from astropy.io import fits
 import matplotlib.pyplot as plt
 import numpy as np
 
+# github test #
 # ----------- #
-# INITIALIZE
+# INITIALIZE 
 # ----------- #
 
 applause_input_csv   = 'DATA/master_ra_0_360_dec_m10_p10.csv'
