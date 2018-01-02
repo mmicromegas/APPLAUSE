@@ -10,7 +10,7 @@ class applause:
     def __init__(self,datacsv):
 		# read CSV
 		
-        self.platecsv = pd.read_csv(datacsv)
+        self.platecsv = pd.read_csv('DATA/'+datacsv)
 		
         self.raj2000   = self.platecsv.raj2000
         self.dej2000   = self.platecsv.dej2000

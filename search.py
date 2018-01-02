@@ -8,7 +8,7 @@ import numpy as np
 import os
 import re
 
-filename='DATA/master_ra_0_360_dec_m90_p90.csv'
+filename='master_ra_0_360_dec_m10_p10.csv'
 #os.system("echo.>RESULTS\restart.txt")
 
 
