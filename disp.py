@@ -13,8 +13,8 @@ import commands
 #applause_input_csv   = 'DATA/master_ra_0_360_dec_m10_p10.csv'
 #horizons_results_csv = 'RESULTS/master_ra_0_360_dec_m10_p10.csv_results.txt'
 
-applause_input_csv   = 'DATA/master_ra_0_360_dec_m90_p90.csv'
-horizons_results_csv = 'RESULTS/master_ra_0_360_dec_m90_p90.csv_results.txt'
+applause_input_csv   = 'DATA/master_ra_0_360_dec_m10_p10.csv'
+horizons_results_csv = 'RESULTS/master_ra_0_360_dec_m10_p10.csv_results.txt'
 
 mode = 2
 
