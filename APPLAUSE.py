@@ -45,7 +45,7 @@ class applause:
 		
 	    # read FITS
 		
-        self.plate    = fits.getdata('DATA\\'+dataplate)
+        self.plate    = fits.getdata('DATA/'+dataplate)
 		
         self.plate_id_uq = self.plate_id.as_matrix()[idx]
         self.scan_id_uq = self.scan_id.as_matrix()[idx]		
@@ -95,7 +95,7 @@ class applause:
             pass
         else:
             self.dataobsname = dataobs		
-            self.dataobs =  fits.getdata(dataobs)
+            self.dataobs =  fits.getdata('DATA/'+dataobs)
 
     def get_literal(self,dataplate):
         filename_scan_literal = dataplate[dataplate.index(".")-1:dataplate.index(".")]		
@@ -105,22 +105,27 @@ class applause:
 	    return self.plate.shape
 		
     def display_plate(self,param_cmap,param_aspect,param_origin,raoffset,decoffset):
+        dpx = (self.xexmin-self.xexmax)/(self.ixmax-self.ixmin)
+        dpy = (self.yexmax-self.yexmin)/(self.iymax-self.iymin)
+        idecoffset = int(decoffset/dpy)
+        iraoffset = -int(raoffset/dpx)
         if self.mode == 0:
-            plt.imshow(self.plate[self.iymin:self.iymax,self.ixmin:self.ixmax], extent=(self.xexmax+decoffset,self.xexmin+decoffset,self.yexmax+raoffset,self.yexmin+raoffset),cmap=param_cmap,aspect=param_aspect,origin=param_origin)
+            plt.imshow(self.plate[self.iymin:self.iymax,self.ixmin:self.ixmax], extent=(self.xexmax,self.xexmin,self.yexmax,self.yexmin),cmap=param_cmap,aspect=param_aspect,origin=param_origin)
         if self.mode == 1:
-            plt.imshow(self.plate[self.iymin:self.iymax,self.ixmin:self.ixmax], extent=(self.xexmin+raoffset,self.xexmax+raoffset,self.yexmax+decoffset,self.yexmin+decoffset),cmap=param_cmap,aspect=param_aspect,origin=param_origin)
+            plt.imshow(self.plate[self.iymin:self.iymax,self.ixmin:self.ixmax], extent=(self.xexmin,self.xexmax,self.yexmax,self.yexmin),cmap=param_cmap,aspect=param_aspect,origin=param_origin)
         if self.mode == 2:
-            plt.imshow(self.plate[self.iymin:self.iymax,self.ixmin:self.ixmax],extent=(self.xexmax+raoffset,self.xexmin+raoffset,self.yexmin+decoffset,self.yexmax+decoffset),cmap=param_cmap,aspect=param_aspect,origin=param_origin)			
+            print(idecoffset,iraoffset)
+            plt.imshow(self.plate[self.iymin+idecoffset:self.iymax+idecoffset,self.ixmin+iraoffset:self.ixmax+iraoffset],extent=(self.xexmax,self.xexmin,self.yexmin,self.yexmax),cmap=param_cmap,aspect=param_aspect,origin=param_origin)			
         if self.mode == 3:
-            plt.imshow(self.plate[self.iymin:self.iymax,self.ixmin:self.ixmax], extent=(self.xexmax+decoffset,self.xexmin+decoffset,self.yexmax+raoffset,self.yexmin+raoffset),cmap=param_cmap,aspect=param_aspect,origin=param_origin)
+            plt.imshow(self.plate[self.iymin:self.iymax,self.ixmin:self.ixmax], extent=(self.xexmax,self.xexmin,self.yexmax,self.yexmin),cmap=param_cmap,aspect=param_aspect,origin=param_origin)
         plt.rcParams.update({'axes.titlesize': 'small'})
         plt.xlabel('RA')
         plt.ylabel('DEC')
-        plt.title(str(self.object)+' '+str(self.plate_id_uq[0])+' '+str(self.ut_mid_matrix[0])+' '+str(np.around(self.objmag,decimals=3))) 		
+        plt.title(str(self.object)+' '+str(self.scan_id_uq[0])+' '+str(self.ut_mid_matrix[0])+' '+str(np.around(self.objmag,decimals=3))) 		
 
     def display_observation(self,fov,param_cmap,param_aspect,param_origin,alpha):
-        ra = self.objra[0]
-        dec = self.objde[0]	
+        ra = self.objra
+        dec = self.objde	
         xsz = fov/2.
         ysz = fov/2.
         dpx = (self.xexmin-self.xexmax)/(self.ixmax-self.ixmin)
@@ -138,7 +143,7 @@ class applause:
         plt.imshow(self.dataobs, cmap=param_cmap,extent=(xexminz,xexmaxz,yexminz,yexmaxz),aspect=param_aspect,origin=param_origin,alpha=alpha)
         plt.xlabel('RA')
         plt.ylabel('DEC')
-        plt.title(str(self.dataobsname))
+        plt.title("DSS1")
 		
     def calc_ra(self,ra):
         ra = ra/15.
@@ -156,7 +161,7 @@ class applause:
         return degrees,int(minutes),int(seconds)
 	
 		
-    def display_plate_zoom(self,fov,param_cmap,param_aspect,param_origin,alpha,dsp):
+    def display_plate_zoom(self,fov,param_cmap,param_aspect,param_origin,alpha,dsp,raoffset,decoffset):
         ra = self.objra
         dec = self.objde	
         xsz = fov/2.
@@ -173,9 +178,11 @@ class applause:
         xexmaxz = ra-xsz
         yexminz = dec-ysz
         yexmaxz = dec+ysz
-
+        idecoffset = int(decoffset/dpy)
+        iraoffset = int(raoffset/dpx)
+        
         if dsp == 1:
-            plt.imshow(self.plate[iyminz:iymaxz,ixminz:ixmaxz], cmap=param_cmap,extent=(xexminz,xexmaxz,yexminz,yexmaxz),aspect=param_aspect,origin=param_origin,alpha=alpha)
+            plt.imshow(self.plate[iyminz+idecoffset:iymaxz+idecoffset,ixminz+iraoffset:ixmaxz+iraoffset], cmap=param_cmap,extent=(xexminz,xexmaxz,yexminz,yexmaxz),aspect=param_aspect,origin=param_origin,alpha=alpha)
         else:
             print('RAmax: ',self.calc_ra(xexminz),'RAmin: ',self.calc_ra(xexmaxz),'DECmax: ',self.calc_dec(yexminz),'DECmin: ',self.calc_dec(yexmaxz))
 
@@ -262,7 +269,21 @@ class applause:
         self.dem = (de-self.ded)*60.
         self.des = (self.dem-np.trunc(self.dem))*60.
         return self.ded[0],np.trunc(self.dem[0]),np.trunc(self.des[0])
-	
+
+    def convra_zoom(self,ra):
+        self.dgrhrs = 15.
+        self.rah = np.trunc(ra/self.dgrhrs)
+        self.ram = (ra/self.dgrhrs-self.rah)*60.
+        self.ras = (self.ram-np.trunc(self.ram))*60.
+        return self.rah,np.trunc(self.ram),np.trunc(self.ras)
+
+    def convde_zoom(self,de):
+        self.ded = np.trunc(de)
+        self.dem = (de-self.ded)*60.
+        self.des = (self.dem-np.trunc(self.dem))*60.
+        return self.ded,np.trunc(self.dem),np.trunc(self.des)
+    
+    
     def onpick(self,event):
         ind = event.ind
         print 'IND: ',ind
@@ -275,7 +296,55 @@ class applause:
 
     def enable_clicks(self,figure):
 	    figure.canvas.mpl_connect('pick_event', self.onpick)
- 
+
+    def onpick_zoom(self,event):
+        ra = self.objra
+        dec = self.objde
+        fov = self.fov
+        xsz = fov/2.
+        ysz = fov/2.
+        ramin = ra - xsz
+        ramax = ra + xsz
+        decmin = dec - ysz 
+        decmax = dec + ysz			
+        row_id_zoom = []
+        tycho2_id_zoom = []
+        raj2000_zoom = []
+        dej2000_zoom = []
+        tycho2_id_zoom = []
+        vmag_zoom = []
+        rowid = self.row_id_matrix
+        raj2000 = self.raj2000_matrix
+        dej2000 = self.dej2000_matrix
+        tycho2id = self.tycho2_id_matrix
+        vmag = self.vmag_matrix
+        sz = np.size(raj2000)		
+        for i in range(sz):
+            if ((ramin < raj2000[i] < ramax) and (decmin < dej2000[i] < decmax)):
+                    row_id_zoom.append(rowid[i])
+                    tycho2_id_zoom.append(tycho2id[i])
+                    raj2000_zoom.append(raj2000[i])
+                    dej2000_zoom.append(dej2000[i])
+                    vmag_zoom.append(vmag[i])
+        
+        print(row_id_zoom)
+                    
+        ind = event.ind
+        ind = ind[0]
+        print 'IND: ',ind
+        print 'ROW_ID: ', row_id_zoom[ind]
+        print 'TYCHO2 catalog ID:', tycho2_id_zoom[ind]
+        print(raj2000_zoom[ind],dej2000_zoom[ind])
+        print 'RAJ2000 (hrs/mm/sss): ',self.convra_zoom(raj2000_zoom[ind])
+        print 'DEJ2000 (dgr/mm/ss): ',self.convde_zoom(dej2000_zoom[ind])
+        print 'VMAG: ', vmag_zoom[ind]
+ #       print 'dataloc: vmag' , data.loc[row_id[ind]-1,'vmag'].values			
+
+    def enable_clicks_zoom(self,figure,fov):
+            self.fov = fov
+	    figure.canvas.mpl_connect('pick_event', self.onpick_zoom)
+            
+            
     def show_header(self,param):	
         #https://www.plate-archive.org/applause/project/fits-header-for-photoplates/ 
         self.plateh   = fits.getheader(self.dataplate)	
@@ -296,7 +365,7 @@ class applause:
         object = self.object
         filename=str(object)+'_'+str(self.scan_id_uq[0])+'_plate.png'
 #        filename=str(object)+'_plate.png'
-        filename = 'RESULTS//'+filename.replace(" ","_")
+        filename = 'RESULTS/'+filename.replace(" ","_")
         filename = filename.replace("(","_")
         filename = filename.replace(")","_")		
         plt.savefig(filename)
@@ -304,16 +373,16 @@ class applause:
     def save_plate_zoom(self):
         object = self.object
         filename=str(object)+'_'+str(self.scan_id_uq[0])+'_zoom_plate.png'
-		
-#        filename=str(object)+'_zoom_plate.png'
-        filename = 'RESULTS//'+filename.replace(" ","_")
+        filename = 'RESULTS/'+filename.replace(" ","_")
         filename = filename.replace("(","_")
         filename = filename.replace(")","_")
         plt.savefig(filename)
 		
     def save_obs_zoom(self):
         object = self.object
-        filename=str(object[0:object.index("(")-1])+'_zoom_obs.png'
-        filename = 'RESULTS//'+filename.replace(" ","_")
+        filename=str(object)+'_'+str(self.scan_id_uq[0])+'_zoom_obs.png'
+        filename = 'RESULTS/'+filename.replace(" ","_")
+        filename = filename.replace("(","_")
+        filename = filename.replace(")","_")
         plt.savefig(filename)
 		
