@@ -150,14 +150,14 @@ class applause:
         hours = int(ra)
         minutes = (ra-hours)*60. 
         seconds = (minutes-int(minutes))*60.
-		
+# int around seconds avoids rounding to 60 		
         return hours,int(minutes),int(seconds)	
 	
     def calc_dec(self,dec):
         degrees = int(dec)
         minutes = (dec-degrees)*60. 
         seconds = (minutes-int(minutes))*60.
-
+# int around seconds avoids rounding to 60
         return degrees,int(minutes),int(seconds)
 	
 		

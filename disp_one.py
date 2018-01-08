@@ -16,7 +16,11 @@ mode = 2
 # scan_id = 17017
 # scan_id = 17220
 # scan_id = 17176
-scan_id = 17351
+# scan_id = 17351
+# scan_id = 17999 # something wrong
+#scan_id = 17971
+#scan_id = 17997
+scan_id = 18052
 
 # if mode = 0, RA is vertical   increasing from T2B, DEC is horizontal increasing from R2L 	
 # if mode = 1, RA is horizonal  increasing from R2L, DEC is vertical increasing from B2T
