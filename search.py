@@ -119,7 +119,7 @@ for scan in scanplates_final:
     file.close()
     fileres.close()
 
-    # write restart file
+    # write restart file ...
 
     filerst = open('RESULTS/' + str('restart') + '.txt', 'a')
     filewrirst = csv.writer(filerst)
