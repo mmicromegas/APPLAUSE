@@ -1,4 +1,4 @@
-import APPLAUSE as appl
+import Applause as appl
 import pandas as pd
 from astropy.io import fits
 import matplotlib.pyplot as plt
@@ -103,7 +103,7 @@ for i in horizons_results.scan_id:
         print(dss_fits)
 
         # initialize plate object by attributes
-        plate_1 = appl.applause(i, applause_input, object_s, objra_s, objde_s, objmag_s, dss_fits, mode)
+        plate_1 = appl.Applause(i, applause_input, object_s, objra_s, objde_s, objmag_s, dss_fits, mode)
 
         figsize = plate_1.get_shape()
         xsz = figsize[1]

@@ -13,7 +13,7 @@ filename = 'master_ra_0_360_dec_m10_p10.csv'
 
 
 # initialize plate object by attributes
-obs = apcs.applause(filename)
+obs = apcs.Applause(filename)
 
 scanplates = obs.extract('scan_id').unique()
 extlist = np.genfromtxt('RESULTS/' + str('restart') + '.txt', delimiter=' ', dtype=int)

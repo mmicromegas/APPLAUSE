@@ -6,7 +6,7 @@ import scipy
 from scipy import ndimage
 
 
-class applause:
+class Applause:
 
     def __init__(self, scan, datacsv, object, objra, objde, objmag, dataobs, mode):
         # read CSV
