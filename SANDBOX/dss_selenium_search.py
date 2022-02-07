@@ -13,15 +13,15 @@ def main():
     chrome_location = 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
     # chrome_selenium_driver_location = 'C:\\Users\\mmocak\\ChromeSeleniumDriver\\chromedriver.exe'
 
-    # chromedriver for 94
-    chrome_selenium_driver_location = 'C:\\Users\\mmocak\\ChromeSeleniumDriver94\\chromedriver.exe'
-    tracker_login_page = 'http://archive.eso.org/dss/dss'
+    # chromedriver for 97 # https://chromedriver.chromium.org/downloads
+    chrome_selenium_driver_location = 'C:\\Users\\mmocak\\ChromeSeleniumDriver97\\chromedriver.exe'
+    dss_archive_eso_page = 'http://archive.eso.org/dss/dss'
 
     # instantiate scraper
-    tw = DssWebscraper(username, password, chrome_location, chrome_selenium_driver_location, tracker_login_page)
+    dw = DssWebscraper(username, password, chrome_location, chrome_selenium_driver_location, dss_archive_eso_page)
 
     # get logged driver - login just once
-    loggedDriver = tw.seleniumLoggedDriver()
+    loggedDriver = dw.seleniumLoggedDriver()
 
     # ra =  # in hh mm ss
     # dec = # in +/- dd mm ss
@@ -31,7 +31,10 @@ def main():
     survey = 'DSS1' # DSS1,DSS2-red,DSS2-blue,DSS2-infrared
     output_format = 'download-gif' # download-gif, download-fits etc.nnn
 
-    dssData = tw.scraper(loggedDriver, object_name,image_size_x,image_size_y, survey,output_format)  # dssData dictionary
+    # http: // archive.eso.org / dss / dss / image?ra = & dec = & equinox = J2000 & name = m31 & x = 5 & y = 5 & Sky - Survey = DSS1 & mime - type = download - fits & statsmode = WEBFORM
+    # http: // archive.eso.org / dss / dss / image?ra = & dec = & equinox = J2000 & name = m31 & x = 5 & y = 5 & Sky - Survey = DSS1 & mime - type = download - gif & statsmode = WEBFORM
+
+    dssData = dw.scraper(loggedDriver, object_name,image_size_x,image_size_y, survey,output_format)  # dssData dictionary
 
     # close the driver after scraping
     loggedDriver.close()
