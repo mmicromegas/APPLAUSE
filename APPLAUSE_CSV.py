@@ -9,7 +9,7 @@ from scipy import ndimage
 class Applause:
 
     def __init__(self, datacsv):
-        # read CSV
+        # read DATA_CSV
 
         self.platecsv = pd.read_csv('DATA/' + datacsv)
 

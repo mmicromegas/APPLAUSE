@@ -9,12 +9,12 @@ from scipy import ndimage
 class Applause:
 
     def __init__(self, scan, datacsv, object, objra, objde, objmag, dataobs, mode):
-        # read CSV
+        # read DATA_CSV
 
         self.platecsv = datacsv
         self.mode = mode
 
-        # extract from CSV
+        # extract from DATA_CSV
 
         self.plate_id = self.platecsv.plate_id
         self.scan_id = self.platecsv.scan_id
@@ -44,7 +44,7 @@ class Applause:
         dataplate = self.filename_scan_matrix[0]
         print(dataplate)
 
-        # read FITS
+        # read DATA_FITS
 
         self.plate = fits.getdata('DATA/' + dataplate)
 
@@ -207,7 +207,7 @@ class Applause:
             np.around(self.objmag, decimals=3)))
 
     def display_tycho2(self, lmag, minra, maxra, minde, maxde):
-        f = fits.open('build/tyc2.fits')  # open a FITS file
+        f = fits.open('build/tyc2.fits')  # open a DATA_FITS file
         tbdata = f[1].data  # assume the first extension is a table
 
         tycho2star_ra = []
