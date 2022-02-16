@@ -24,7 +24,7 @@ if os.path.isfile(applauseInputCsv):
 else:
        print('No file - storing to csv')
        tap = Tap(applauseInputCsv)
-       tap.updateApplauseData(scanIdList)
+       tap.createApplauseData(scanIdList)
        results = pd.read_csv(applauseInputCsv)
 
 

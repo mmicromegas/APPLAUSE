@@ -96,5 +96,5 @@ class Display():
         plt.rcParams.update({'axes.titlesize': 'small'})
         plt.xlabel('RA')
         plt.ylabel('DEC')
-        plt.show()
+        plt.show(block=False)
 
