@@ -6,7 +6,7 @@ from UTILS.Display import Display
 from UTILS.Tap import Tap
 import sys
 
-scanIdDisp = '17133'
+scanIdDisp = '17132'
 scanIdList = "({})".format("'17133','17134'")
 applauseInputCsv =  os.path.join('DATA_CSV','masterApplauseInfoScan.csv')
 
@@ -18,13 +18,13 @@ if os.path.isfile(applauseInputCsv):
        if int(scanIdDisp) in scanIdUnique:
               results = pd.read_csv(applauseInputCsv)
        else:
-              tap = Tap(applauseInputCsv)
-              tap.updateApplauseData("({})".format(scanIdDisp))
+              tap = Tap(applauseInputCsv,"({})".format(scanIdDisp))
+              tap.updateApplauseData()
               results = pd.read_csv(applauseInputCsv)
 else:
        print('No file - storing to csv')
-       tap = Tap(applauseInputCsv)
-       tap.createApplauseData(scanIdList)
+       tap = Tap(applauseInputCsv,scanIdList)
+       tap.createApplauseData()
        results = pd.read_csv(applauseInputCsv)
 
 
@@ -81,7 +81,7 @@ else:
        appl.getFits(int(scanIdDisp))
 
        # initialize plate object by attributes
-       mode = 2
+       mode = 2 # can be deduced from _x and _y ?
        plate = Display(scanIdDisp, results, mode)
        plate.displayPlate('gray', 'auto', 'lower')
 
