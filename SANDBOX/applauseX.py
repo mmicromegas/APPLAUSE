@@ -1,13 +1,28 @@
+import importlib
+
 import os
 import numpy as np
 import pandas as pd
+#import UTILS
+#importlib.reload(UTILS)
+#importlib.reload(UTILS.Display)
+
 from UTILS.Applause import Applause
 from UTILS.Display import Display
 from UTILS.Tap import Tap
+
 import sys
 
-scanIdDisp = '17132'
+#def main():
+# check python version
+#    if sys.version_info[0] < 3:
+#        print("Python " + str(sys.version_info[0]) + "  is not supported. EXITING.")
+#        sys.exit()
+
+
+scanIdDisp = '17136'
 scanIdList = "({})".format("'17133','17134'")
+
 applauseInputCsv =  os.path.join('DATA_CSV','masterApplauseInfoScan.csv')
 
 if os.path.isfile(applauseInputCsv):
@@ -68,10 +83,10 @@ if os.path.isfile(path_to_fits):
        # initialize plate object by attributes
        mode = 2
        plate = Display(scanIdDisp, results, mode)
-       plate.displayPlate('gray', 'auto', 'lower')
-       #plate.display_stars()
+       fig = plate.displayPlate('gray', 'auto', 'lower')
+       plate.displayStars()
        #plate.display_object()
-       #plate.enable_clicks(fig_1)
+       plate.enableClicks(fig)
 else:
        print('No fits file exists!')
 
@@ -82,7 +97,14 @@ else:
 
        # initialize plate object by attributes
        mode = 2 # can be deduced from _x and _y ?
-       plate = Display(scanIdDisp, results, mode)
+       fig = plate = Display(scanIdDisp, results, mode)
        plate.displayPlate('gray', 'auto', 'lower')
+       plate.enableClicks(fig)
 
 
+
+# EXECUTE MAIN
+#if __name__ == "__main__":
+#    main()
+
+# END

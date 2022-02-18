@@ -23,8 +23,10 @@ class Display():
         y_peak = dfCsvScanId.y_peak
         x_psf = dfCsvScanId.x_psf
         y_psf = dfCsvScanId.y_psf
+
         raj2000 = dfCsvScanId.raj2000
         dej2000 = dfCsvScanId.dej2000
+
         vmag = dfCsvScanId.vmag
         vmagerr = dfCsvScanId.vmagerr
         tycho2_id = dfCsvScanId.tycho2_id
@@ -53,13 +55,19 @@ class Display():
         self.iymin = np.min(y_peak)
         self.iymax = np.max(y_peak)
 
+        self.dej2000 = dej2000
+        self.raj2000 = raj2000
+        self.tycho2_id = tycho2_id
+        self.vmag = vmag
+
+
     def displayPlate(self, param_cmap, param_aspect, param_origin):
 
         raoffset = 0.
         decoffset = 0.
 
-        #print("raoffset (in minutes): ", round(raoffset * 60., 2))
-        #print("decoffset (in minutes): ", round(decoffset * 60., 2))
+        # print("raoffset (in minutes): ", round(raoffset * 60., 2))
+        # print("decoffset (in minutes): ", round(decoffset * 60., 2))
 
         plate = self.plate
         figsize = plate.shape
@@ -69,7 +77,7 @@ class Display():
         ysize = int(ysz * xsize / xsz)
 
         # initialize figure
-        plt.figure(1, figsize=(xsize, ysize))
+        fig = plt.figure(1, figsize=(xsize, ysize))
 
         dpx = (self.xexmin - self.xexmax) / (self.ixmax - self.ixmin)
         dpy = (self.yexmax - self.yexmin) / (self.iymax - self.iymin)
@@ -98,3 +106,39 @@ class Display():
         plt.ylabel('DEC')
         plt.show(block=False)
 
+        return fig
+
+    def displayStars(self):
+        if self.mode == 0 or self.mode == 3:
+            plt.scatter(self.dej2000, self.raj2000, c='r', s=40, alpha=0.3, picker=True)
+        if self.mode == 1 or self.mode == 2:
+            plt.scatter(self.raj2000, self.dej2000, c='r', s=40, alpha=0.3, picker=True)
+
+    def enableClicks(self, figure):
+        figure.canvas.mpl_connect('pick_event', self.onpick)
+
+    def onpick(self, event):
+        ind = event.ind
+        print('IND: ', ind[0])
+        print('TYCHO2 catalog ID:', self.tycho2_id.reset_index(drop = True)[ind[0]])
+        #print('RAJ2000 (hrs/mm/sss): ', self.convra(self.raj2000.reset_index(drop = True)[ind[0]]))
+        #print('DEJ2000 (dgr/mm/ss): ', self.convde(self.dej2000.reset_index(drop = True)[ind[0]]))
+
+        print('RAJ2000: ', self.raj2000.reset_index(drop = True)[ind[0]])
+        print('DEJ2000: ', self.dej2000.reset_index(drop = True)[ind[0]])
+
+        print('VMAG: ', self.vmag.reset_index(drop = True)[ind[0]])
+        print('++++++++++++++')
+
+    def convra(self, ra):
+        self.dgrhrs = 15. # what ?? why 15
+        self.rah = np.trunc(ra / self.dgrhrs)
+        self.ram = (ra / self.dgrhrs - self.rah) * 60.
+        self.ras = (self.ram - np.trunc(self.ram)) * 60.
+        return self.rah[0], np.trunc(self.ram[0]), np.trunc(self.ras[0])
+
+    def convde(self, de):
+        self.ded = np.trunc(de)
+        self.dem = (de - self.ded) * 60.
+        self.des = (self.dem - np.trunc(self.dem)) * 60.
+        return self.ded[0], np.trunc(self.dem[0]), np.trunc(self.des[0])
