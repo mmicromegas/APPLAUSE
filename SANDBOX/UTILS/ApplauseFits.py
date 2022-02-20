@@ -3,16 +3,17 @@ import pyvo as vo
 import sys
 import os
 
-class Applause():
 
-    def __init__(self, params):
-        self.params = params
+# https://www.plate-archive.org/applause/documentation/scripted-access-tap/
+class ApplauseFits():
+
+    def __init__(self):
 
         self.name = 'APPLAUSE'
         self.url = 'https://www.plate-archive.org/tap'
         self.token = '71966108a826fa1322537884f762862976b80cbb'
 
-    def getFits(self,scanId):
+    def getFits(self, scanId):
         # https://www.plate-archive.org/applause/documentation/scripted-access-tap/
 
         name = self.name
@@ -23,8 +24,8 @@ class Applause():
 
         # !! scan id is not plate id
 
-        #print('\npyvo version %s \n' % vo.__version__)
-        #print('TAP service %s \n' % name)
+        # print('\npyvo version %s \n' % vo.__version__)
+        # print('TAP service %s \n' % name)
 
         tap_session = requests.Session()
         tap_session.headers['Authorization'] = token
@@ -49,7 +50,7 @@ class Applause():
 
         for i in range(len(results)):
             filePath = results.getrecord(i)['filename_scan']
-            print("Downloading .. {} .. {}".format(i,filePath))
+            print("Downloading .. {} .. {}".format(i, filePath))
             try:
                 r = requests.get(results.getrecord(i)['filename_scan'])
             except requests.exceptions.HTTPError as e:  # https://pavolkutaj.medium.com/exception-handling-of-python-requests-module-73dcdeb42aa4

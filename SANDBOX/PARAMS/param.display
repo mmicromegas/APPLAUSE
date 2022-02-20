@@ -1,0 +1,4 @@
+# ----- Parameter file for applauseX ---------- #
+[]
+## Input Data Display Id ...................... ## [prop,scanIdDisp,17155]
+## Project Label (oburn, ccp: for now.......... ## [prop,plabel,oburn]
